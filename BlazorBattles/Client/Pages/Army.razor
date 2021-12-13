@@ -1,0 +1,27 @@
+﻿@page "/army"
+
+<h3>My Army</h3>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Attributes</th>
+        <th>Hit points</th>
+    </tr>
+    @foreach (var userUnit in UnitService.MyUnits)
+    {
+        var unit = userUnit.Unit;
+        <tr>
+            <td>
+                <img src="@UnitService.GetUnitImage(unit)" />
+                @unit.Title
+            </td>
+            <td>
+                Attack: @unit.Attack
+                - Defence: @unit.Defence
+                - Price: @unit.BananaCost
+            </td>
+            <td>@userUnit.HitPoints HP</td>
+        </tr>
+    }
+</table>

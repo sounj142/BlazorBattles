@@ -1,9 +1,24 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorBattles.Client.Services;
+using Microsoft.AspNetCore.Components;
+using System;
 
 namespace BlazorBattles.Client.Shared
 {
-    public partial class TopMenu : ComponentBase
+    public partial class TopMenu : ComponentBase, IDisposable
     {
-        public int Bananas { get; set; } = 100;
+        [Inject]
+        public IBananaService BananaService { get; set; }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            BananaService.OnBananasChanged += StateHasChanged;
+        }
+
+        public void Dispose()
+        {
+            BananaService.OnBananasChanged -= StateHasChanged;
+        }
     }
 }

@@ -1,0 +1,14 @@
+﻿@page "/build"
+
+<h3>Build</h3>
+
+<div class="form-group">
+    <select class="form-control" @bind="selectedUnitId">
+        @foreach (var unit in UnitService.Units)
+        {
+            <option value="@unit.Id">@unit.Title - Price: @unit.BananaCost</option>
+        }
+    </select>
+</div>
+
+<button class="btn btn-primary" @onclick="BuildUnit">Build</button>
