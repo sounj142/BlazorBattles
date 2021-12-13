@@ -1,4 +1,4 @@
-﻿using BlazorBattles.Shared;
+﻿using BlazorBattles.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

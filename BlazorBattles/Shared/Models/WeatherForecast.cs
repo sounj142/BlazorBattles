@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlazorBattles.Shared
+namespace BlazorBattles.Shared.Models
 {
     public class WeatherForecast
     {
