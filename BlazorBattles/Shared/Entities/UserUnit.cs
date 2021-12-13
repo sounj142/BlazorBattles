@@ -1,4 +1,4 @@
-﻿namespace BlazorBattles.Shared.Models
+﻿namespace BlazorBattles.Shared.Entities
 {
     public class UserUnit
     {

@@ -1,4 +1,4 @@
-﻿using BlazorBattles.Shared.Models;
+﻿using BlazorBattles.Shared.Entities;
 using Blazored.Toast.Services;
 using System.Collections.Generic;
 using System.Linq;
