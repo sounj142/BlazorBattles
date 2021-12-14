@@ -1,5 +1,5 @@
 ﻿using BlazorBattles.Client.Services;
-using BlazorBattles.Shared.Models;
+using BlazorBattles.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;

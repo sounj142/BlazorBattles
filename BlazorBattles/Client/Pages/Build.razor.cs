@@ -29,7 +29,6 @@ namespace BlazorBattles.Client.Pages
                 else
                     ToastService.ShowError("Not enough bananas", ":(");
             }
-
         }
     }
 }

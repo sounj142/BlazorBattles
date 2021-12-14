@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorBattles.Shared.Models
+namespace BlazorBattles.Shared.ViewModels
 {
     public class UserLogin
     {

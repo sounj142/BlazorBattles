@@ -1,26 +1,26 @@
-﻿using BlazorBattles.Shared.Entities;
+﻿using BlazorBattles.Shared.DTOs;
 using Blazored.Toast.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace BlazorBattles.Client.Services
 {
     public class UnitService : IUnitService
     {
         private readonly IToastService _toastService;
+        private readonly HttpClient _httpClient;
 
-        public UnitService(IToastService toastService)
+        public UnitService(IToastService toastService, HttpClient httpClient)
         {
             _toastService = toastService;
+            _httpClient = httpClient;
         }
 
-        public IList<Unit> Units { get; private set; } = new List<Unit>
-        {
-            new Unit { Id = 1, Title = "Knight", Attack = 10, Defence = 10, BananaCost = 100 },
-            new Unit { Id = 2, Title = "Archer", Attack = 15, Defence = 5, BananaCost = 150 },
-            new Unit { Id = 3, Title = "Mage", Attack = 20, Defence = 1, BananaCost = 200 },
-        };
-        public IList<UserUnit> MyUnits { get; private set; } = new List<UserUnit>();
+        public IList<UnitDto> Units { get; private set; } = null;
+        public IList<UserUnitDto> MyUnits { get; private set; } = new List<UserUnitDto>();
 
         public void AddToMyUnits(int unitId)
         {
@@ -29,18 +29,18 @@ namespace BlazorBattles.Client.Services
                 AddToMyUnits(unit);
         }
 
-        public void AddToMyUnits(Unit unit)
+        public void AddToMyUnits(UnitDto unit)
         {
-            MyUnits.Add(new UserUnit { UnitId = unit.Id, HitPoints = unit.HitPoints, Unit = unit });
+            MyUnits.Add(new UserUnitDto { UnitId = unit.Id, HitPoints = unit.HitPoints, Unit = unit });
             _toastService.ShowSuccess($"{unit.Title} unit has been added", "Unit built!");
         }
 
-        public Unit FindUnit(int unitId)
+        public UnitDto FindUnit(int unitId)
         {
             return Units.FirstOrDefault(u => u.Id == unitId);
         }
 
-        public string GetUnitImage(Unit unit)
+        public string GetUnitImage(UnitDto unit)
         {
             return unit.Title switch
             {
@@ -49,6 +49,11 @@ namespace BlazorBattles.Client.Services
                 "Mage" => "/icons/mage.png",
                 _ => string.Empty
             };
+        }
+
+        public async Task LoadUnits()
+        {
+            Units = await _httpClient.GetFromJsonAsync<IList<UnitDto>>("api/units");
         }
     }
 }
