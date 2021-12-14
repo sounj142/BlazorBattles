@@ -1,0 +1,21 @@
+﻿@*@page "/login"*@
+
+Please login or <a href="/register">register</a>
+
+<EditForm Model="model" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div class="form-group">
+        <label for="UserName" class="required">User name</label>
+        <InputText id="UserName" @bind-Value="model.UserName" class="form-control"></InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="Password" class="required">Password</label>
+        <InputText id="Password" @bind-Value="model.Password" class="form-control" type="password"></InputText>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+
+    <ValidationSummary />
+</EditForm>

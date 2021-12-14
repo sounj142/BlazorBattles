@@ -1,0 +1,72 @@
+﻿@page "/register"
+
+<h3>Register</h3>
+
+<EditForm Model="model" OnValidSubmit="HandleRegistration">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div class="form-group">
+        <label for="Email" class="required">Email</label>
+        <InputText id="Email" @bind-Value="model.Email" class="form-control"></InputText>
+        <ValidationMessage For="@(() => model.Email)" />
+    </div>
+
+    <div class="form-group">
+        <label for="UserName" class="required">User name</label>
+        <InputText id="UserName" @bind-Value="model.UserName" class="form-control"></InputText>
+        <ValidationMessage For="@(() => model.UserName)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Password" class="required">Password</label>
+        <InputText id="Password" @bind-Value="model.Password" class="form-control" type="password"></InputText>
+        <ValidationMessage For="@(() => model.Password)" />
+    </div>
+
+    <div class="form-group">
+        <label for="ConfirmPassword">Confirm Password</label>
+        <InputText id="ConfirmPassword" @bind-Value="model.ConfirmPassword" class="form-control" type="password"></InputText>
+        <ValidationMessage For="@(() => model.ConfirmPassword)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Bio">Bio</label>
+        <InputTextArea id="Bio" @bind-Value="model.Bio" class="form-control"></InputTextArea>
+        <ValidationMessage For="@(() => model.Bio)" />
+    </div>
+
+    <div class="form-group">
+        <label for="StartUnitId">Start Unit</label><br />
+        <InputRadioGroup id="StartUnitId" @bind-Value="model.StartUnitId" class="form-control">
+            @foreach (var unit in UnitService.Units)
+            {
+                <label>
+                    <InputRadio Value="@unit.Id" /> @unit.Title
+                </label>
+                <br />
+            }
+        </InputRadioGroup>
+        <ValidationMessage For="@(() => model.StartUnitId)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Bananas" class="required">Bananas</label>
+        <InputNumber id="Bananas" @bind-Value="model.Bananas" class="form-control"></InputNumber>
+        <ValidationMessage For="@(() => model.Bananas)" />
+    </div>
+
+    <div class="form-group">
+        <label for="DateOfBirth">Date of Birth</label>
+        <InputDate id="DateOfBirth" @bind-Value="model.DateOfBirth" class="form-control"></InputDate>
+        <ValidationMessage For="@(() => model.DateOfBirth)" />
+    </div>
+
+    <div class="form-check">
+        <InputCheckbox id="IsConfirmed" @bind-Value="model.IsConfirmed" class="form-check-input"></InputCheckbox>
+        <label for="IsConfirmed" class="form-check-label">Confirmed</label>
+        <ValidationMessage For="@(() => model.IsConfirmed)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+
+</EditForm>

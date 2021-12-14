@@ -1,6 +1,9 @@
 ﻿using BlazorBattles.Client.Services;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
+using System.Threading.Tasks;
 
 namespace BlazorBattles.Client.Shared
 {
@@ -8,6 +11,15 @@ namespace BlazorBattles.Client.Shared
     {
         [Inject]
         public IBananaService BananaService { get; set; }
+
+        [Inject]
+        public ILocalStorageService LocalStorage { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
         protected override void OnInitialized()
         {
@@ -19,6 +31,13 @@ namespace BlazorBattles.Client.Shared
         public void Dispose()
         {
             BananaService.OnBananasChanged -= StateHasChanged;
+        }
+
+        private async Task Logout()
+        {
+            await LocalStorage.RemoveItemAsync("IsAuthenticated");
+            ((CustomAuthStateProvider)AuthenticationStateProvider).NotifyAuthenticationChanged();
+            NavigationManager.NavigateTo("/");
         }
     }
 }

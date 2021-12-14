@@ -1,9 +1,11 @@
 ﻿using BlazorBattles.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorBattles.Client.Pages
 {
+    [Authorize]
     public partial class Build : ComponentBase
     {
         private int selectedUnitId = 1;
