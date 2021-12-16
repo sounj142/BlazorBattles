@@ -19,7 +19,7 @@ namespace BlazorBattles.Client.Services
             _httpClient = httpClient;
         }
 
-        public IList<UnitDto> Units { get; private set; } = null;
+        public IList<UnitDto> Units { get; private set; } = new UnitDto[0];
         public IList<UserUnitDto> MyUnits { get; private set; } = new List<UserUnitDto>();
 
         public void AddToMyUnits(int unitId)

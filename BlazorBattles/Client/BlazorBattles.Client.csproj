@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.12" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
@@ -18,12 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Pages\Authentication\Login - Copy.razor.cs">
-      <DependentUpon>Login.razor.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Build - Copy.razor.cs">
-      <DependentUpon>Build.razor.cs</DependentUpon>
-    </Compile>
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

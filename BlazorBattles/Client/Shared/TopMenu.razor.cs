@@ -1,4 +1,5 @@
-﻿using BlazorBattles.Client.Services;
+﻿using BlazorBattles.Client.Helpers;
+using BlazorBattles.Client.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -35,7 +36,9 @@ namespace BlazorBattles.Client.Shared
 
         private async Task Logout()
         {
-            await LocalStorage.RemoveItemAsync("IsAuthenticated");
+            await LocalStorage.RemoveItemAsync(LocalStorageNames.AccessToken);
+            await LocalStorage.RemoveItemAsync(LocalStorageNames.UserInfo);
+
             ((CustomAuthStateProvider)AuthenticationStateProvider).NotifyAuthenticationChanged();
             NavigationManager.NavigateTo("/");
         }

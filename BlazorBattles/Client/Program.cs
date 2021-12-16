@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Blazored.Toast;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using BlazorBattles.Client.Helpers;
 
 namespace BlazorBattles.Client
 {
@@ -19,9 +20,14 @@ namespace BlazorBattles.Client
 
             builder.Services.AddBlazoredToast();
             builder.Services.AddBlazoredLocalStorage();
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddHttpClient("ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                .AddHttpMessageHandler<AuthorizationMessageHandler>();
+            builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("ServerAPI"));
+
             builder.Services.AddScoped<IBananaService, BananaService>();
             builder.Services.AddScoped<IUnitService, UnitService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<AuthorizationMessageHandler>();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
             builder.Services.AddOptions();

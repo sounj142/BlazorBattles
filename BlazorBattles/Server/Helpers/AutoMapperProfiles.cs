@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlazorBattles.Server.Entities;
 using BlazorBattles.Shared.DTOs;
+using BlazorBattles.Shared.ViewModels;
 
 namespace BlazorBattles.Server.Helpers
 {
@@ -10,6 +11,8 @@ namespace BlazorBattles.Server.Helpers
         {
             CreateMap<Unit, UnitDto>();
             CreateMap<UnitDto, Unit>();
+            CreateMap<UserRegister, AppUser>();
+            CreateMap<AppUser, UserDto>();
         }
     }
 }

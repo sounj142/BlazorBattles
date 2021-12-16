@@ -1,12 +1,20 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace BlazorBattles.Client.Services
 {
     public class BananaService : IBananaService
     {
-        public int Bananas { get; set; } = 1000;
+        private readonly IAccountService _accountService;
+
+        public int Bananas { get; private set; }
 
         public event Action OnBananasChanged;
+
+        public BananaService(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
 
         public bool EatBananas(int amount)
         {
@@ -30,5 +38,13 @@ namespace BlazorBattles.Client.Services
         }
 
         private void BananasChanged() => OnBananasChanged?.Invoke();
+
+        public async Task GetBananasCount()
+        {
+            var userInfo = await _accountService.GetUserInfo();
+            Bananas = userInfo.Bananas;
+
+            BananasChanged();
+        }
     }
 }

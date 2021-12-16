@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using BlazorBattles.Server.Data;
 using BlazorBattles.Server.Data.Interfaces;
 using BlazorBattles.Server.Helpers;
+using BlazorBattles.Server.Entities;
+using Microsoft.AspNetCore.Authentication;
+using static IdentityModel.OidcConstants;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlazorBattles.Server
 {
@@ -24,12 +28,33 @@ namespace BlazorBattles.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+            //services.AddControllersWithViews();
+            //services.AddRazorPages();
             services.AddDbContext<DataContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services
+                .AddDefaultIdentity<AppUser>(options => {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.User.RequireUniqueEmail = true;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<DataContext>();
+
+            services.AddIdentityServer()
+                .AddApiAuthorization<AppUser, DataContext>(options => {
+                    options.Clients[0].AllowedGrantTypes.Add(GrantTypes.Password);
+                });
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +77,10 @@ namespace BlazorBattles.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseIdentityServer();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

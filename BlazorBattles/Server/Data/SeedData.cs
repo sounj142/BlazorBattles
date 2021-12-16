@@ -1,4 +1,6 @@
 ﻿using BlazorBattles.Server.Entities;
+using BlazorBattles.Shared;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,14 +18,17 @@ namespace BlazorBattles.Server.Data
             using var scope = host.Services.CreateScope();
             try
             {
-                using var dbContext = scope.ServiceProvider.GetService<DataContext>();
+                using var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                using var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                using var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
                 // run migrations
                 await dbContext.Database.MigrateAsync();
 
-
                 // seed data
                 await SeedUnits(dbContext);
+                await SeedRoles(roleManager);
+                await SeedUsers(userManager);
             }
             catch (Exception ex)
             {
@@ -49,6 +54,37 @@ namespace BlazorBattles.Server.Data
 
                 await dbContext.SaveChangesAsync();
             }
+        }
+
+        public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
+        {
+            if (await roleManager.Roles.AnyAsync()) return;
+
+            var roles = new []
+            {
+                new IdentityRole { Name = RoleNames.Member },
+                new IdentityRole { Name = RoleNames.Admin },
+            };
+
+            foreach (var role in roles) await roleManager.CreateAsync(role);
+        }
+
+        public static async Task SeedUsers(UserManager<AppUser> userManager)
+        {
+            if (await userManager.Users.AnyAsync()) return;
+
+            var admin = new AppUser
+            {
+                UserName = "Admin",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Bananas = 10000,
+                Email = "hoang@hoang.com",
+                Bio = "Bio here",
+                DateCreated = DateTimeOffset.Now
+            };
+
+            await userManager.CreateAsync(admin, "Password@123");
+            await userManager.AddToRolesAsync(admin, new[] { "Admin" });
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class UserUnitDto
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int UnitId { get; set; }
         public int HitPoints { get; set; }
 
